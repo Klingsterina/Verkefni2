@@ -1,19 +1,14 @@
 import { readFile } from 'node:fs/promises';
 import pg from 'pg';
 
-import { configDotenv } from 'dotenv';
-
-configDotenv();
-
 const SCHEMA_FILE = './sql/create.sql';
 const DROP_SCHEMA_FILE = './sql/drop.sql';
-// const INSERT_FILE = './sql/insert.sql';
-// const INPUT_DIR = './data';
+const INSERT_FILE = './sql/insert.sql';
 
 async function setupDbFromFiles(db) {
   const dropScript = await readFile(DROP_SCHEMA_FILE);
   const createScript = await readFile(SCHEMA_FILE);
-//   const insertScript = await readFile(INSERT_FILE);
+  const insertScript = await readFile(INSERT_FILE);
 
   if (await db.query(dropScript.toString('utf-8'))) {
     console.info('schema dropped');
@@ -29,6 +24,13 @@ async function setupDbFromFiles(db) {
     return false;
   }
 
+  if (await db.query(insertScript.toString('utf-8'))) {
+    console.info('inserted data');
+  } else {
+    console.info('data not inserted');
+    return false;
+  }
+
   return true;
 }
 
@@ -39,15 +41,10 @@ async function create() {
   }
   const { Client } = pg;
     const db = new Client({
-      database: process.env.database,
+      connectionString: process.env.DATABASE_URL,
     });
     await db.connect();
-    const resultFromFileSetup = await setupDbFromFiles(db);
-
-  if (!resultFromFileSetup) {
-    console.info('error setting up database from files');
-    process.exit(1);
-  }
+    await setupDbFromFiles(db);
 
 }
 

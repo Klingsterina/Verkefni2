@@ -13,7 +13,7 @@
           "correct": false
         },
         {
-          "answer": "Uncaught ReferenceError: item is not defined",
+          "answer": "uncaught referenceerror: item is not defined",
           "correct": false
         },
         {

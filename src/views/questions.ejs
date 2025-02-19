@@ -1,0 +1,11 @@
+<%- include('header') -%>
+
+<ul>
+    <% for(const question of questions) {%>
+        <li>
+            <p> <%=question.text %></a>
+        </li>
+    <% } %>
+</ul>
+
+<%- include('footer') -%>

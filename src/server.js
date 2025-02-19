@@ -12,6 +12,14 @@ import { router } from './routes.js';
 
 const app = express();
 
+import { fileURLToPath } from 'url';
+
+const viewsPath = fileURLToPath(new URL('./views', import.meta.url));
+console.log(viewsPath);
+
+app.set('views', viewsPath);
+app.set('view engine', 'ejs');
+
 app.use('/', router);
 
 const hostname = '127.0.0.1';
