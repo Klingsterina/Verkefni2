@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS Category (
 );
 
 CREATE TABLE IF NOT EXISTS Question (
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     text TEXT NOT NULL,
     category_id INTEGER NOT NULL,
     FOREIGN KEY (category_id) REFERENCES Category(id)

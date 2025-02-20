@@ -1,14 +1,14 @@
 <%- include('header') -%>
 <h1>Senda inn spurningu</h1>
 <div class="container">
-  <form method="post" action="/form">
+  <form id="questionForm" method="post">
     <div class="spurning">
-      <label for="text">Spurning:</label>
-      <textarea name="text" placeholder="Skrifa spurningu:"></textarea>
+      <label for="questionText">Spurning:</label>
+      <textarea id="questionText" name="text" placeholder="Skrifa spurningu:"></textarea>
     </div>
     <div class="heiti-flokks">
-      <label for="name">Heiti flokks:</label>
-      <select name="flokkur">
+      <label for="category">Heiti flokks:</label>
+      <select id="category" name="flokkur">
         <option value="1">HTML</option>
         <option value="2">CSS</option>
         <option value="3">JavaScript</option>
@@ -22,8 +22,6 @@
       </div>
     </div>
     <button type="button" id="addAnswer">Bæta við svarmöguleika</button>
-
-    
     <button type="submit" class="submit">Senda inn</button>
   </form>
 <%- include('tilbaka') -%>
@@ -34,63 +32,66 @@
 </html>
 
 <script>
-  document.getElementById("addAnswer").addEventListener("click", function() {
-    var container = document.getElementById("answers");
-    var count = container.getElementsByClassName("answer").length;
-    
-    var div = document.createElement("div");
-    div.className = "answer";
-    div.innerHTML = `
-      <input type="text" name="svar[]" placeholder="Svarmöguleiki ${count + 1}">
-      <input type="radio" name="rett_svar" value="${count}"> Rétt svar
-    `;
-    console.log(count);
-    
-    container.appendChild(div);
+document.getElementById("addAnswer").addEventListener("click", function() {
+  var container = document.getElementById("answers");
+  var count = container.getElementsByClassName("answer").length;
+  
+  var div = document.createElement("div");
+  div.className = "answer";
+  div.innerHTML = `
+    <input type="text" name="svar[]" placeholder="Svarmöguleiki ${count + 1}">
+    <input type="radio" name="rett_svar" value="${count}"> Rétt svar
+  `;
+  container.appendChild(div);
+});
+
+document.getElementById("questionForm").addEventListener("submit", function(event) {
+  event.preventDefault(); // Prevent default form submission
+
+  var question = document.getElementById("questionText").value;
+  var category = document.getElementById("category").value;
+  var answers = [];
+  var correctAnswer = null;
+  
+  document.querySelectorAll("#answers .answer").forEach((el, index) => {
+    var answerText = el.querySelector("input[type='text']").value;
+    var isCorrect = el.querySelector("input[type='radio']").checked;
+    answers.push(answerText);
+    if (isCorrect) correctAnswer = index;
   });
 
-  document.getElementById("questionForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Koma í veg fyrir hefðbundna sendingu forms
+  if (correctAnswer === null) {
+    alert("Veldu rétt svar!");
+    return;
+  }
 
-    var question = document.getElementById("questionText").value;
-    var category = document.getElementById("category").value;
-    var answers = [];
-    var correctAnswer = null;
-    
-    document.querySelectorAll("#answers .answer").forEach((el, index) => {
-      var answerText = el.querySelector("input[type='text']").value;
-      var isCorrect = el.querySelector("input[type='radio']").checked;
-      answers.push(answerText);
-      if (isCorrect) correctAnswer = index;
-    });
+  var data = {
+    question: question,
+    category: category,
+    answers: answers,
+    correctAnswer: correctAnswer
+  };
+  console.log(data)
+  console.log(JSON.stringify(data))
 
-    if (correctAnswer === null) {
-      alert("Veldu rétt svar!");
-      return;
-    }
+  fetch("/form", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json" // 🔹 Tell the server this is a fetch() request
+  },
+  body: JSON.stringify(data)
+})
+.then(response => response.json())
+.then(result => {
+  if (result.redirect) {
+    window.location.href = result.redirect; // 🔹 Redirect to the EJS page
+  }
+})
+.catch(error => {
+  console.error("Villa við að senda:", error);
+  alert("Villa við að senda spurningu.");
+});
 
-    var data = {
-      spurning: question,
-      flokkur: category,
-      svor: answers,
-      rett_svar: correctAnswer
-    };
-
-    fetch("/form", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(result => {
-      alert("Spurning send!");
-      document.getElementById("questionForm").reset();
-    })
-    .catch(error => {
-      console.error("Villa við að senda:", error);
-      alert("Villa við að senda spurningu.");
-    });
-  });
+});
 </script>

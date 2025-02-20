@@ -119,6 +119,41 @@ export class Database {
     }
     return result.rows;
   }
+
+  async createQuestion(question, category, answers, correctAnswer) {
+    const client = await this.connect();
+    try {
+      await client.query('BEGIN');
+      const categoryQuery = 'SELECT id FROM category WHERE id = $1';
+      const categoryResult = await client.query(categoryQuery, [category]);
+      let categoryId = null;
+      if (categoryResult.rows.length === 0) {
+        const insertCategoryQuery = 'INSERT INTO category(name) VALUES($1) RETURNING id';
+        const insertCategoryResult = await client.query(insertCategoryQuery, [category]);
+        categoryId = insertCategoryResult.rows[0].id;
+      } else {
+        categoryId = categoryResult.rows[0].id;
+      }
+
+      const insertQuestionQuery = 'INSERT INTO question(text, category_id) VALUES($1, $2) RETURNING id';
+      const insertQuestionResult = await client.query(insertQuestionQuery, [question, categoryId]);
+      const questionId = insertQuestionResult.rows[0].id;
+
+      
+      await answers.map(async (answer, index) => {
+        const insertAnswerQuery = 'INSERT INTO answer(text, question_id, is_correct) VALUES($1, $2, $3)';
+        await client.query(insertAnswerQuery, [answer, questionId, correctAnswer === index]);
+      });
+
+      await client.query('COMMIT');
+    } catch (e) {
+      console.error('Error creating question', e);
+      await client.query('ROLLBACK');
+    } finally {
+      client.release();
+    }
+    
+  }
 }
 
 /** @type {Database | null} */

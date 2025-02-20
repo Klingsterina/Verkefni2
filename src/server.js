@@ -12,6 +12,7 @@ import { router } from './routes.js';
 
 const app = express();
 app.use(express.static('public'));
+app.use(express.json());
 
 import { fileURLToPath } from 'url';
 

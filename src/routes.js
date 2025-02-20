@@ -13,20 +13,6 @@ router.get('/', async (req, res) => {
 router.get('/spurningar/:category', async (req, res) => { 
   const categoryName = req.params.category;
   const questions = await getDatabase()?.getQuestions(categoryName);
-
-  // const questions = [
-  //   { 
-  //     id: 1,
-  //     text: 'Spurning 1',
-  //     category: 'Flokkur 1',
-  //     answers: [
-  //       { text: 'Svarmöguleiki 1', isCorrect: true },
-  //       { text: 'Svarmöguleiki 2', isCorrect: false },
-  //       { text: 'Svarmöguleiki 3', isCorrect: false },
-  //       { text: 'Svarmöguleiki 4', isCorrect: false },
-  //     ]
-  //   }
-  // ]
   res.render('questions', { questions, categoryName }); // Pass only categoryName
 });
 
@@ -35,29 +21,33 @@ router.get('/form', (req, res) => {
   res.render('form', { title: 'Búa til flokk' });
 });
 
+router.get('/form-created', (req, res) => {
+  res.render('form-created', { title: 'Flokkur búinn til' });
+});
+
 router.post('/form', async (req, res) => {
   try {
     console.log('POST /form');
-    console.log(req);
-    // xss 
-    const { name } = req.body;
-    const cleanName = xss(name);
-    console.log(cleanName);
-    // insert into database
-  
-    // const { name } = req.body;
-    // await getDatabase()?.createQuestion(name);
+    console.log(req.body); // Debugging received data
+
+    const { question, category, answers, correctAnswer } = req.body;
+    const cleanQuestion = xss(question);
+
+    await getDatabase()?.createQuestion(cleanQuestion, category, answers, correctAnswer);
+
+    if (req.headers.accept === 'application/json') {
+      return res.json({ success: true, redirect: "/form-created" });
+    }
+
+    res.status(201).render('form-created', { title: 'Flokkur búinn til' });
 
   } catch (e) {
-    console.error('Villa við að búa til flokk', e);
-    console.error(e);
+    console.error('Villa við að búa til spurningu', e);
+
+    if (req.headers.accept === 'application/json') {
+      return res.status(500).json({ success: false, redirect: "/form-error" });
+    }
+
+    res.render('form-error', { title: 'Villa við að búa til spurningu' });
   }
-
-  // Hér þarf að setja upp validation, hvað ef name er tómt? hvað ef það er allt handritið að BEE MOVIE?
-  // Hvað ef það er SQL INJECTION? HVAÐ EF ÞAÐ ER EITTHVAÐ ANNAÐ HRÆÐILEGT?!?!?!?!?!
-  // TODO VALIDATION OG HUGA AÐ ÖRYGGI
-
-  // Ef validation klikkar, senda skilaboð um það á notanda
-
-  res.render('form-created', { title: 'Flokkur búinn til' });
 });
