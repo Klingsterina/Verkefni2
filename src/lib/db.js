@@ -1,4 +1,5 @@
 import pg from 'pg';
+import xss from 'xss';
 
 //Grunnur að database klasa fenginn frá sýnilausn vef2-2024-v2-synilausn
 //Sótt voru open, close, connect og query föllin fyrir database klasann og getDatabase fallið
@@ -92,12 +93,32 @@ export class Database {
   }
 
   async getQuestions(category) {
-    const q = "SELECT q.id as id, q.text, c.name as category from question as q join category as c on q.category_id = c.id where c.name = $1";
-    const result = await this.query(q, [category]);
+    const questionQuery = `SELECT q.id as id, q.text, c.name as category from question as q join category as c on q.category_id = c.id where c.name = $1`;
+    const result = await this.query(questionQuery, [category]);
+
+    for(const question of result.rows) {
+      const answerQuery = `SELECT * FROM answer WHERE question_id = $1`;
+      const answers = await this.query(answerQuery, [question.id]);
+      //shuffle answers
+      answers.rows.sort(() => Math.random() - 0.5);
+      question.answers = answers.rows;
+    }
+
+    // clean data
+    for (const question of result.rows) {
+      let cleanedText = stringToHtml(question.text);
+
+      cleanedText = cleanedText.replace(/\\n/g, '\n');
+      cleanedText = cleanedText.replace(/\n\n/g, '</p><p>');
+      cleanedText = cleanedText.replace(/\n/g, '<br>');
+      // cleanedText = cleanedText.replace(/>/g, "&gt;");
+      question.text = cleanedText;
+      for (const answer of question.answers) {
+        answer.text = xss(answer.text);
+      }
+    }
     return result.rows;
-
   }
-
 }
 
 /** @type {Database | null} */
@@ -120,4 +141,20 @@ export function getDatabase() {
   db.open();
 
   return db;
+}
+
+export function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+export function stringToHtml(str) {
+  return escapeHtml(str)
+    .split("\n\n")                    // Skipta texta upp á tveggja línu bili
+    .map((line) => `<p>${line}</p>`)  // Setja hverja málsgrein í <p> tag
+    .join("")                         // Sameina aftur
+    .replace(/\n/g, "<br>")           // Stök línuskipti fá <br>
+    .replace(/ {2}/g, "&nbsp;&nbsp;");// Gera tvöfalt bil sýnilegt sem &nbsp;&nbsp;
 }

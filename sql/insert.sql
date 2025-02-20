@@ -26,6 +26,40 @@ INSERT INTO Answer(text, question_id, is_correct) VALUES
 ('<button to=\"about.html\">About</button>', 1, false),
 ('Allar jafn góðar / All equally good', 1, false),
 
+('Þannig að stafir birtist rétt.', 2, true),
+('Skilgreining sem visual studio verður að hafa þannig að prettier virki rétt.', 2,false),
+('Skilgreining sem aXe krefur okkur um til að vefur verði aðgengilegur.', 2,false),
+('Ekkert af þessu.',2,false),
+
+('Allt af þessu', 3, true),
+('Nota eingöngu lyklaborð við að skoða og nota vefinn.', 3, false),
+('Merkja form á aðgengilegan hátt.', 3, false),
+('Hafa tóman alt texta á myndum ef þær eru eingöngu til skrauts.',3,false),
+
+('Hvert HTML element hefur einhverja skilgreinda merkingu—merkingarfræðilegt gildi—sem við þurfum að hafa í huga þegar við smíðum vefi.', 4, true),
+('Hvert HTML tag hefur einhverja skilgreinda merkingu—merkingarfræðilegt gildi—sem við þurfum að hafa í huga þegar við smíðum vefi', 4, false),
+('Hvert CSS eigindi hefur einhverja skilgreinda merkingu—merkingarfræðilegt gildi—sem við þurfum að hafa í huga þegar við smíðum vefi.', 4, false),
+('Hver CSS selector hefur einhverja skilgreinda merkingu—merkingarfræðilegt gildi—sem við þurfum að hafa í huga þegar við smíðum vefi.', 4, false),
+
+('font-size: 20px;, color: green;', 5, true),
+('font-size: 15px;, color: red;', 5, false),
+('font-size: 20px;, color: red;', 5, false),
+('font-size: 15px;, color: green;', 5, false),
+
+('Skilgreina fallback gildi á undan nýja gildinu sem væri notað í stað þess ef það er ekki stutt', 6, true),
+('Skilgreina fallback gildi á eftir nýja gildinu sem væri notað í stað þess ef það er ekki stutt.', 6, false),
+('Setja upp JavaScript virkni sem bendir notanda á að sækja nýjann vafra sem styður gildið.', 6, false),
+('Þetta er ekki stutt í CSS.', 6, false),
+
+('„Flex container“ og „flex items; „grid container“ og „grid items“: greinarmunur á foreldri og börnum þegar flexbox og CSS grid er notað.', 7, true),
+('„Flex container“ og „flex items: greinarmunur á foreldri og börnum eingngu þegar flexbox er notað.', 7, false),
+('„Grid container“ og „grid items“: greinarmunur á foreldri og börnum eingöngu þegar grid er notað.', 7, false),
+('Hugtök sem eru notuð með `querySelectorAll`: „container“ er það element sem leitað er undir, „items“ það sem er skilað.', 7, false),
+
+('Höfum skilgreinda tvo ása: aðalás og krossás sem eru hornréttir; sjálfgefin röðun er á aðalás frá vinstri til hægri.', 8, true),
+('"Höfum skilgreinda tvo ása: aðalás og krossás sem eru samsíða; sjálfgefin röðun er á aðalás frá vinstri til hægri.', 8, false),
+('Höfum skilgreinda tvo ása: aðalás og krossás sem eru hornréttir; sjálfgefin röðun er á krossás frá vinstri til hægri.', 8, false),
+('Höfum skilgreinda tvo ása: aðalás og krossás sem eru samsíða; sjálfgefin röðun er á krossás frá vinstri til hægri.', 8, false),
 
 ('8', 9, true),
 ('[8]', 9, false),

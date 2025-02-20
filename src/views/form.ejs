@@ -1,6 +1,96 @@
 <%- include('header') -%>
+<h1>Senda inn spurningu</h1>
+<div class="container">
+  <form method="post" action="/form">
+    <div class="spurning">
+      <label for="text">Spurning:</label>
+      <textarea name="text" placeholder="Skrifa spurningu:"></textarea>
+    </div>
+    <div class="heiti-flokks">
+      <label for="name">Heiti flokks:</label>
+      <select name="flokkur">
+        <option value="1">HTML</option>
+        <option value="2">CSS</option>
+        <option value="3">JavaScript</option>
+      </select>
+    </div>
+    
+    <div id="answers">
+      <div class="answer">
+        <input type="text" name="svar[]" placeholder="Svarmöguleiki 1">
+        <input type="radio" name="rett_svar" value="0"> Rétt svar
+      </div>
+    </div>
+    <button type="button" id="addAnswer">Bæta við svarmöguleika</button>
 
-<h1>Form</h1>
+    
+    <button type="submit" class="submit">Senda inn</button>
+  </form>
+<%- include('tilbaka') -%>
+</div>
 
+</body>
 
-<%- include('footer') -%>
+</html>
+
+<script>
+  document.getElementById("addAnswer").addEventListener("click", function() {
+    var container = document.getElementById("answers");
+    var count = container.getElementsByClassName("answer").length;
+    
+    var div = document.createElement("div");
+    div.className = "answer";
+    div.innerHTML = `
+      <input type="text" name="svar[]" placeholder="Svarmöguleiki ${count + 1}">
+      <input type="radio" name="rett_svar" value="${count}"> Rétt svar
+    `;
+    console.log(count);
+    
+    container.appendChild(div);
+  });
+
+  document.getElementById("questionForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Koma í veg fyrir hefðbundna sendingu forms
+
+    var question = document.getElementById("questionText").value;
+    var category = document.getElementById("category").value;
+    var answers = [];
+    var correctAnswer = null;
+    
+    document.querySelectorAll("#answers .answer").forEach((el, index) => {
+      var answerText = el.querySelector("input[type='text']").value;
+      var isCorrect = el.querySelector("input[type='radio']").checked;
+      answers.push(answerText);
+      if (isCorrect) correctAnswer = index;
+    });
+
+    if (correctAnswer === null) {
+      alert("Veldu rétt svar!");
+      return;
+    }
+
+    var data = {
+      spurning: question,
+      flokkur: category,
+      svor: answers,
+      rett_svar: correctAnswer
+    };
+
+    fetch("/form", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+      alert("Spurning send!");
+      document.getElementById("questionForm").reset();
+    })
+    .catch(error => {
+      console.error("Villa við að senda:", error);
+      alert("Villa við að senda spurningu.");
+    });
+  });
+</script>

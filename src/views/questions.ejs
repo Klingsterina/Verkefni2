@@ -6,13 +6,22 @@
     <ol class="question-list">
         <% for(const question of questions) {%>
             <li>
-                <p class="question"> <%=question.text %></p>
-                <%- include('answer') %>
+                <p class="question"> <%- question.text %></p>
+                <p class="bold">Svarmöguleikar:</p>
+                <ol class="answer-list">
+                    <% for(const answer of question.answers) { %>
+                        <li>
+                        <button 
+                        onclick="this.classList.add('<%=answer.is_correct%>'=== 'true' ? 'correct' : 'incorrect')">
+                        <%=answer.text%></button>
+                    </li>
+                        <% } %>
+                </ol>
             </li>
         <% } %>
     </ol>
     <div class="links">
-        <%- include('footer') %>
+        <%- include('tilbaka') %>
         <a href="/form" class="tilbaka">Senda inn spurningu</a>
     </div>
 </div>
@@ -20,3 +29,7 @@
 </body>
 
 </html>
+
+<script>
+
+</script>
