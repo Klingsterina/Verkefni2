@@ -1,11 +1,22 @@
 <%- include('header') -%>
 
-<ul>
-    <% for(const question of questions) {%>
-        <li>
-            <p> <%=question.text %></a>
-        </li>
-    <% } %>
-</ul>
+<div class="container">
+    <h1>Questions</h1>
+    <h2><%= categoryName %></h2>
+    <ol class="question-list">
+        <% for(const question of questions) {%>
+            <li>
+                <p class="question"> <%=question.text %></p>
+                <%- include('answer') %>
+            </li>
+        <% } %>
+    </ol>
+    <div class="links">
+        <%- include('footer') %>
+        <a href="/form" class="tilbaka">Senda inn spurningu</a>
+    </div>
+</div>
 
-<%- include('footer') -%>
+</body>
+
+</html>

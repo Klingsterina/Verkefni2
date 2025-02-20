@@ -97,6 +97,7 @@ export class Database {
     return result.rows;
 
   }
+
 }
 
 /** @type {Database | null} */

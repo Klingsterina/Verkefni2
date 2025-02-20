@@ -56,7 +56,6 @@ body {
   color: white;
 }
 
-
 .flokkar {
   margin: 10px 0;
 }
@@ -85,6 +84,14 @@ h1 {
   color: white;
 }
 
+.links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
 .question {
   font-size: 1.2em;
 }
@@ -110,6 +117,10 @@ h1 {
   border-radius: 5px;
   color: black;
   padding: 0.5rem;
+}
+
+.tilbaka:hover {
+  background-color: #f4f4f4;
 }
 
 ul {

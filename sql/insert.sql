@@ -1,8 +1,7 @@
 INSERT INTO CATEGORY (id, name) VALUES 
 (1, 'html'),
 (2, 'css'),
-(3, 'javascript'),
-(69, 'rust');
+(3, 'javascript');
 
 INSERT INTO Question (id, text, category_id) VALUES 
 (1, 'Ef við værum að smíða vefsíðu og myndum vilja geta farið frá index.html yfir á about.html, hvað væri best að nota?', 1),

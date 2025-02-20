@@ -21,11 +21,12 @@ router.get('/', async (req, res) => {
 // Náum í gögn úr /bar route
 // Ef við sleppum ? svarar þetta ekki fyrir /bar, aðeins /bar/x, /bar/foo o.sfr.
 router.get('/spurningar/:category', async (req, res) => { 
-  const questions = await getDatabase()?.getQuestions(req.params.category);
-  res.render('questions', {questions});
-
+  const categoryName = req.params.category;
+  const questions = await getDatabase()?.getQuestions(categoryName);
+  res.render('questions', { questions, categoryName }); // Pass only categoryName
 });
 
+
 router.get('/form', (req, res) => {
-  res.send('Form');
+  res.render('form');
 });
