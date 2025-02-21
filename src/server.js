@@ -2,6 +2,8 @@ import express from 'express';
 import { router } from './routes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+dotenv.config(); // Loads environment variables from .env
 
 const app = express();
 

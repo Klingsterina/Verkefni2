@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "lint": "eslint .",
-    "start" : "node --env-file=.env src/server.js",
-    "dev": "node --env-file=.env --watch-path ./src src/server.js",
-    "setupdb": "node --env-file=.env src/setup-database.js"
+    "start": "node src/server.js",
+    "dev": "node --watch-path ./src src/server.js",
+    "setupdb": "node src/setup-database.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Klingsterina/Verkefni2#readme",
   "description": "",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "pg": "^8.13.3",
