@@ -76,7 +76,7 @@ select {
   width: fit-content;
 }
 
-.spurning, .heiti-flokks, .answer {
+.spurning, .heiti-flokks {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -93,18 +93,29 @@ select {
   padding: 10px;
 }
 
+#answers {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .answer {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem; /* Adds space between input and radio */
+  justify-content: space-between;
+  gap: 0.5rem; 
   width: 100%;
+  width: 300px;
+}
+
+.answer label {
+  white-space: nowrap;
 }
 
 textarea, input[type="text"], select {
   width: 100%;
-  max-width: 300px; /* Prevent stretching */
+  max-width: 300px; 
   padding: 8px;
   text-align: center;
 }
@@ -119,15 +130,9 @@ form button {
   cursor: pointer;
 }
 
-button:hover {
+form button:hover {
   background: #ccc;
 }
-
-/* .answer {
-  display: flex;
-  gap: 1rem;
-  margin: 2px;
-} */
 
 .flokkar {
   margin: 10px 0;

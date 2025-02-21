@@ -10,7 +10,7 @@
     <div class="heiti-flokks">
       <label for="category">Heiti flokks:</label>
       <select id="category" name="flokkur" required>
-        <option>Veldu flokk</option>
+        <option value="" disabled selected>Veldu flokk</option>
         <option value="1">HTML</option>
         <option value="2">CSS</option>
         <option value="3">JavaScript</option>
@@ -20,7 +20,8 @@
     <div id="answers">
       <div class="answer">
         <input type="text" name="svar[]" placeholder="Svarmöguleiki 1" required>
-        <input type="radio" name="rett_svar" value="0" required> Rétt svar
+        <input type="radio" id="rett_svar_0" name="rett_svar" value="0" required> 
+        <label for="rett_svar_0">Rétt svar</label>
       </div>
     </div>
     <button type="button" id="addAnswer">Bæta við svarmöguleika</button>
@@ -40,9 +41,13 @@ document.getElementById("addAnswer").addEventListener("click", function() {
   
   var div = document.createElement("div");
   div.className = "answer";
+
+  var radioId = `rett_svar_${count}`;
+
   div.innerHTML = `
-    <input type="text" name="svar[]" placeholder="Svarmöguleiki ${count + 1}">
-    <input type="radio" name="rett_svar" value="${count}"> Rétt svar
+    <input type="text" name="svar[]" placeholder="Svarmöguleiki ${count + 1}" required>
+    <input type="radio" id="${radioId}" name="rett_svar" value="${count}" required>
+    <label for="${radioId}">Rétt svar</label>
   `;
   container.appendChild(div);
 });
