@@ -5,7 +5,7 @@
     <div class="spurning">
       <label for="questionText">Spurning:</label>
       <textarea id="questionText" name="text" placeholder="Skrifa spurningu:"></textarea>
-      <p id="questionError" style="color: red; display: none;">Spurning má ekki vera lengri en 150 stafir.</p>
+      <!-- <p id="questionError" style="color: red; display: none;">Spurning má ekki vera lengri en 150 stafir.</p> -->
     </div>
     <div class="heiti-flokks">
       <label for="category">Heiti flokks:</label>
@@ -55,11 +55,12 @@ document.getElementById("questionForm").addEventListener("submit", function(even
   var correctAnswer = null;
 
   // Athuga lengd spurningar
-  if (question.length === 0 || question.length > 150) {
-    document.getElementById("questionError").style.display = "block";
+  if (question.length === 0) {
+    alert("Spurning má ekki vera tóm");
     return;
-  } else {
-    document.getElementById("questionError").style.display = "none";
+  }
+  if (question.length > 100) {
+    alert("Spurning má ekki vera lengri en 150 stafir.");
   }
   
   document.querySelectorAll("#answers .answer").forEach((el, index) => {
