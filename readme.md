@@ -1,0 +1,1 @@
+hlekkur að vefsíðu: https://spurningaleikur.onrender.com/spurningar/html
