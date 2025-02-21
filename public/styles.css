@@ -64,6 +64,7 @@ form {
   gap: 1rem;
   padding: 1rem;
   align-items: center;
+  width: 100%;
 }
 
 .form-created {
@@ -75,11 +76,11 @@ select {
   width: fit-content;
 }
 
-.spurning, .heiti-flokks {
+.spurning, .heiti-flokks, .answer {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  width: 100%;
 }
 
 .heiti-flokks select{
@@ -94,9 +95,39 @@ select {
 
 .answer {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* Adds space between input and radio */
+  width: 100%;
+}
+
+textarea, input[type="text"], select {
+  width: 100%;
+  max-width: 300px; /* Prevent stretching */
+  padding: 8px;
+  text-align: center;
+}
+
+form button {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  margin-top: 0.5rem;
+  background: #ddd;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #ccc;
+}
+
+/* .answer {
+  display: flex;
   gap: 1rem;
   margin: 2px;
-}
+} */
 
 .flokkar {
   margin: 10px 0;

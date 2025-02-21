@@ -4,12 +4,13 @@
   <form id="questionForm" method="post">
     <div class="spurning">
       <label for="questionText">Spurning:</label>
-      <textarea id="questionText" name="text" placeholder="Skrifa spurningu:"></textarea>
+      <textarea id="questionText" name="text" placeholder="Skrifa spurningu:" required></textarea>
       <!-- <p id="questionError" style="color: red; display: none;">Spurning má ekki vera lengri en 150 stafir.</p> -->
     </div>
     <div class="heiti-flokks">
       <label for="category">Heiti flokks:</label>
-      <select id="category" name="flokkur">
+      <select id="category" name="flokkur" required>
+        <option>Veldu flokk</option>
         <option value="1">HTML</option>
         <option value="2">CSS</option>
         <option value="3">JavaScript</option>
@@ -60,16 +61,30 @@ document.getElementById("questionForm").addEventListener("submit", function(even
     return;
   }
   if (question.length > 100) {
-    alert("Spurning má ekki vera lengri en 150 stafir.");
+    alert("Spurning má ekki vera lengri en 100 stafir.");
+  }
+
+  // Athuga flokk
+  if (category === "Veldu flokk") {
+    alert("Veldu flokk fyrir spurningu.");
+    return;
   }
   
   document.querySelectorAll("#answers .answer").forEach((el, index) => {
     var answerText = el.querySelector("input[type='text']").value;
     var isCorrect = el.querySelector("input[type='radio']").checked;
-    if (answerText.length > 1) {
-      answers.push(answerText);
-      if (isCorrect) correctAnswer = index;
+    if (answerText.length === 0) {
+      alert("Svarmöguleiki má ekki vera tómur");
+      event.preventDefault();
+      return;
     }
+    if (answerText.length > 50) {
+      alert("Svarmöguleiki má ekki vera lengri en 50 stafir.");
+      event.preventDefault();
+      return;
+    }
+    answers.push(answerText);
+    if (isCorrect) correctAnswer = index;
   });
 
   if (answers.length < 2) {
