@@ -16,7 +16,7 @@ export class Database {
   open() {
     this.pool = new pg.Pool({ 
       connectionString: this.connectionString,
-      // ssl: { rejectUnauthorized: false }
+      ssl: { rejectUnauthorized: false }
     });
 
     this.pool.on('error', (err) => {
