@@ -1,5 +1,8 @@
 import { readFile } from 'node:fs/promises';
 import pg from 'pg';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const SCHEMA_FILE = './sql/create.sql';
 const DROP_SCHEMA_FILE = './sql/drop.sql';
@@ -42,6 +45,7 @@ async function create() {
   const { Client } = pg;
     const db = new Client({
       connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false }
     });
     await db.connect();
     await setupDbFromFiles(db);
