@@ -43,9 +43,12 @@ async function create() {
     process.exit(1);
   }
   const { Client } = pg;
+
+
+    const ssl = process.env.NODE_ENV !== 'production' ? false : { rejectUnauthorized: false };
     const db = new Client({
       connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false }
+      ssl,
     });
     await db.connect();
     await setupDbFromFiles(db);
