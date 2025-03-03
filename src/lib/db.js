@@ -1,5 +1,9 @@
 import pg from 'pg';
 import xss from 'xss';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 //Grunnur að database klasa fenginn frá sýnilausn vef2-2024-v2-synilausn
 //Sótt voru open, close, connect og query föllin fyrir database klasann og getDatabase fallið
@@ -13,10 +17,12 @@ export class Database {
         this.connectionString = connectionString;
     }
 
+
   open() {
+    const ssl = process.env.NODE_ENV !== 'production' ? false : { rejectUnauthorized: false };
     this.pool = new pg.Pool({ 
       connectionString: this.connectionString,
-      ssl: { rejectUnauthorized: false }
+      ssl,
     });
 
     this.pool.on('error', (err) => {
