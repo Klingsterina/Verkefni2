@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
   res.render('index', {title: 'Forsíða', categories});
 });
 
-// Náum í gögn úr /bar route
+// Náum í gögn úr /bar route 
 // Ef við sleppum ? svarar þetta ekki fyrir /bar, aðeins /bar/x, /bar/foo o.sfr.
 router.get('/spurningar/:category', async (req, res) => { 
   const categoryName = req.params.category;
